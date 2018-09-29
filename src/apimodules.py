@@ -1,4 +1,4 @@
-import urlparse
+import urllib.parse
 import urllib
 from mimetypes import guess_all_extensions
 from datetime import datetime
@@ -8,9 +8,10 @@ import base64
 from collections import OrderedDict
 import threading
 
-from PySide.QtWebKit import QWebView, QWebPage
-from PySide.QtGui import QMessageBox, QHBoxLayout
-from PySide.QtCore import QUrl
+from PySide2.QtWebEngineWidgets import QWebEngineView, QWebEnginePage
+
+from PySide2.QtWidgets import QMessageBox, QHBoxLayout
+from PySide2.QtCore import QUrl
 
 import requests
 from requests.exceptions import *
@@ -63,7 +64,7 @@ class ApiTab(QWidget):
         """
          Return the Node-ID as a string
         """
-        return unicode(val).encode("utf-8")
+        return str(val).encode("utf-8")
 
     def parseURL(self, url):
         """
@@ -72,7 +73,7 @@ class ApiTab(QWidget):
         url = url.split('?', 1)
         path = url[0]
         query = url[1] if len(url) > 1 else ''
-        query = urlparse.parse_qsl(query)
+        query = urllib.parse.parse_qs(query)
         query = OrderedDict((k, v) for k, v in query)
 
         return path, query
@@ -84,7 +85,7 @@ class ApiTab(QWidget):
         #matches = re.findall(ur"<([^>]*>", pattern)
         #matches = re.findall(ur"(?<!\\)<([^>]*?)(?<!\\)>", pattern)
         #Find placeholders in brackets, ignoring escaped brackets (escape character is backslash)
-        matches = re.findall(ur"(?<!\\)(?:\\\\)*<([^>]*?(?<!\\)(?:\\\\)*)>", pattern)
+        matches = re.findall(r"(?<!\\)(?:\\\\)*<([^>]*?(?<!\\)(?:\\\\)*)>", pattern)
 
         for match in matches:
             pipeline = match.split('|')
@@ -96,7 +97,7 @@ class ApiTab(QWidget):
             elif key == 'None':
                 value = ''
             elif key == 'Object ID':
-                value = unicode(nodedata['objectid'])
+                value = str(nodedata['objectid'])
             else:
                 value = getDictValue(nodedata['response'], key)
 
@@ -112,7 +113,7 @@ class ApiTab(QWidget):
             if (pattern == '<' + match + '>'):
                 pattern = value
             else:
-               pattern = pattern.replace('<' + match + '>', value)
+               pattern = pattern.replace('<' + match + '>', str(value))
                pattern = pattern.replace('\\<', '<')
                pattern = pattern.replace('\\>', '>')
                pattern = pattern.replace('\\\\', '\\')
@@ -138,11 +139,11 @@ class ApiTab(QWidget):
             value = self.parsePlaceholders(params[name], nodedata, {})
 
             #check parameter name
-            match = re.match(ur"^<(.*)>$", unicode(name))
+            match = re.match(r"^<(.*)>$", str(name))
             if match:
                 templateparams[match.group(1)] = value
             else:
-                urlparams[name] = unicode(value).encode("utf-8")
+                urlparams[name] = str(value).encode("utf-8")
 
         #Replace placeholders in urlpath
         urlpath = self.parsePlaceholders(urlpath, nodedata, templateparams)
@@ -209,11 +210,10 @@ class ApiTab(QWidget):
         return options
 
     def setOptions(self, options):
-        if options.has_key('client_id'):
+        if 'client_id' in options:
             self.clientIdEdit.setText(options.get('client_id',''))
-        if options.has_key('client_secret'):
+        if 'client_secret' in options:
             self.clientSecretEdit.setText(options.get('client_secret',''))
-
         if 'access_token' in options:
             self.tokenEdit.setText(options.get('access_token', ''))
 
@@ -257,6 +257,11 @@ class ApiTab(QWidget):
         except AttributeError:
             pass
 
+        try:
+            self.folderEdit.setText(options.get('folder',''))
+        except AttributeError:
+            pass
+            
         # Extract options
         try:
             self.extractEdit.setEditText(options.get('nodedata', ''))
@@ -486,7 +491,7 @@ class ApiTab(QWidget):
                         response = session.get(path, params=args,headers=headers, timeout=self.timeout, verify=True)
                     else:
                         response = session.request(method,path, params=args,headers=headers, timeout=self.timeout, verify=True)
-                except (HTTPError, ConnectionError), e:
+                except (HTTPError, ConnectionError) as e:
                     maxretries -= 1
                     if maxretries > 0:
                         time.sleep(0.1)
@@ -496,7 +501,7 @@ class ApiTab(QWidget):
                 else:
                     break
 
-        except (HTTPError, ConnectionError), e:
+        except (HTTPError, ConnectionError) as e:
             raise Exception(u"Request Error: {0}".format(e.message))
         else:
             if jsonify == True:
@@ -565,7 +570,7 @@ class ApiTab(QWidget):
         window.setWindowTitle(caption)
 
         #create WebView with Facebook log-Dialog, OpenSSL needed
-        self.login_webview = QWebView(window)
+        self.login_webview = QWebEngineView(window)
         window.setCentralWidget(self.login_webview )
 
         # Use the custom- WebPage class
@@ -606,8 +611,8 @@ class ApiTab(QWidget):
             if not filename:
                 filename = url_filename
 
-            filename = re.sub(ur'[^a-zA-Z0-9_.-]+', '', filename)
-            fileext = re.sub(ur'[^a-zA-Z0-9_.-]+', '', fileext)
+            filename = re.sub(r'[^a-zA-Z0-9_.-]+', '', filename)
+            fileext = re.sub(r'[^a-zA-Z0-9_.-]+', '', fileext)
 
             filetime = time.strftime("%Y-%m-%d-%H-%M-%S")
             filenumber = 0
@@ -655,7 +660,7 @@ class ApiTab(QWidget):
                     data = {'sourcepath': path, 'sourcequery': args,'response':response.text}
 
                 status = 'error' + ' (' + str(response.status_code) + ')'
-        except Exception, e:
+        except Exception as e:
             raise Exception(u"Download Error: {0}".format(e.message))
         else:
             return data, dict(response.headers), status
@@ -786,7 +791,7 @@ class FacebookTab(ApiTab):
 
             if options['logrequests']:
                 logCallback(u"Fetching data for {0} from {1}".format(nodedata['objectid'],
-                                                                                   urlpath + "?" + urllib.urlencode(
+                                                                                   urlpath + "?" + urllib.parse.urlencode(
                                                                                        urlparams)))
 
             # data
@@ -978,7 +983,7 @@ class TwitterTab(ApiTab):
 
             if options['logrequests']:
                 logCallback(u"Fetching data for {0} from {1}".format(nodedata['objectid'],
-                                                                               urlpath + "?" + urllib.urlencode(
+                                                                               urlpath + "?" + urllib.parse.urlencode(
                                                                                    urlparams)))
 
             # data
@@ -1215,7 +1220,7 @@ class TwitterStreamingTab(ApiTab):
                             else:
                                 self.connected = False
                                 raise Exception("Request Error: " + str(response.status_code) + ". Message: "+response.content)
-                        print "good response"
+                        print ("good response")
                         return response
 
 
@@ -1259,7 +1264,7 @@ class TwitterStreamingTab(ApiTab):
             urlparams = options["params"]
 
         if options['logrequests']:
-            logCallback(u"Fetching data for {0} from {1}".format(nodedata['objectid'], urlpath + "?" + urllib.urlencode(urlparams)))
+            logCallback(u"Fetching data for {0} from {1}".format(nodedata['objectid'], urlpath + "?" + urllib.parse.urlencode(urlparams)))
 
         # data
         headers = None
@@ -1449,7 +1454,7 @@ class OAuth2Tab(ApiTab):
                 urlparams = options['params']
 
             if options['logrequests']:
-                logCallback(u"Fetching data for {0} from {1}".format(nodedata['objectid'],urlpath + "?" + urllib.urlencode(urlparams)))
+                logCallback(u"Fetching data for {0} from {1}".format(nodedata['objectid'],urlpath + "?" + urllib.parse.urlencode(urlparams)))
 
             # data
             options['querytime'] = str(datetime.now())
@@ -1482,7 +1487,7 @@ class OAuth2Tab(ApiTab):
         if options.get('scope',None) is not None:
             params['scope'] = options['scope']
 
-        params = '&'.join('%s=%s' % (key, value) for key, value in params.iteritems())
+        params = '&'.join('%s=%s' % (key, value) for key, value in params.items())
         url = options['auth_uri'] + "?"+params
 
         super(OAuth2Tab, self).doLogin(False,
@@ -1693,7 +1698,7 @@ class FilesTab(OAuth2Tab):
 
         # Log
         if options['logrequests']:
-            logCallback(u"Downloading file for {0} from {1}".format(nodedata['objectid'],urlpath + "?" + urllib.urlencode(urlparams)))
+            logCallback(u"Downloading file for {0} from {1}".format(nodedata['objectid'],urlpath + "?" + urllib.parse.urlencode(urlparams)))
 
         options['querytime'] = str(datetime.now())
         data, headers, status = self.download(urlpath, urlparams, requestheaders,method,payload,foldername,filename,fileext)
@@ -1702,33 +1707,33 @@ class FilesTab(OAuth2Tab):
         callback(data, options, headers)
 
 
-class QWebPageCustom(QWebPage):
+class QWebPageCustom(QWebEnginePage):
     logmessage = Signal(str)
     urlNotFound = Signal(QUrl)
 
     def __init__(self, *args, **kwargs):
         super(QWebPageCustom, self).__init__(*args, **kwargs)
-        self.networkAccessManager().sslErrors.connect(self.onSslErrors)
+        #self.networkAccessManager().sslErrors.connect(self.onSslErrors)
 
     def supportsExtension(self, extension):
-        if extension == QWebPage.ErrorPageExtension:
+        if extension == QWebEnginePage.ErrorPageExtension:
             return True
         else:
             return False
 
     def extension(self, extension, option=0, output=0):
-        if extension != QWebPage.ErrorPageExtension: return False
+        if extension != QWebEnginePage.ErrorPageExtension: return False
 
-        if option.domain == QWebPage.QtNetwork:
+        if option.domain == QWebEnginePage.QtNetwork:
             #msg = "Network error (" + str(option.error) + "): " + option.errorString
             #self.logmessage.emit(msg)
             self.urlNotFound.emit(option.url)
 
-        elif option.domain == QWebPage.Http:
+        elif option.domain == QWebEnginePage.Http:
             msg = "HTTP error (" + str(option.error) + "): " + option.errorString
             self.logmessage.emit(msg)
 
-        elif option.domain == QWebPage.WebKit:
+        elif option.domain == QWebEnginePage.WebKit:
             msg = "WebKit error (" + str(option.error) + "): " + option.errorString
             self.logmessage.emit(msg)
         else:
@@ -1738,7 +1743,7 @@ class QWebPageCustom(QWebPage):
         return True
 
     def onSslErrors(self, reply, errors):
-        url = unicode(reply.url().toString())
+        url = str(reply.url().toString())
         reply.ignoreSslErrors()
         self.logmessage.emit("SSL certificate error ignored: %s (Warning: Your connection might be insecure!)" % url)
 

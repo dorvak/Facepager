@@ -14,7 +14,7 @@ exe = Executable(
         appendScriptToLibrary=False
         )
 
-includes = ["sqlite3","dateutil","atexit","PySide.QtNetwork"]
+includes = ["sqlite3","dateutil","atexit","PySide2.QtNetwork"]
 includefiles = ['docs/','ssl/']
 
 

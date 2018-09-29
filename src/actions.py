@@ -6,7 +6,7 @@ from database import *
 from apimodules import *
 from apithread import ApiThreadPool
 from collections import deque
-import StringIO
+from io import StringIO
 import codecs
 import os
 import platform
@@ -318,7 +318,7 @@ class Actions(object):
 
 
     def queryNodes(self, indexes=None, apimodule=False, options=False):
-        if not self.actionQuery.isEnabled() or not ((self.mainWindow.tree.selectedCount > 0) or (indexes is not None)):
+        if not self.actionQuery.isEnabled() or not ((self.mainWindow.tree.selectedCount() > 0) or (indexes is not None)):
             return (False)
 
         #Show progress window
@@ -470,7 +470,7 @@ class Actions(object):
                         QApplication.processEvents()
 
             finally:
-                request_summary = [str(val)+" x "+key for key,val in statuscount.iteritems()]
+                request_summary = [str(val)+" x "+key for key,val in statuscount.items()]
                 request_summary = ", ".join(request_summary)
 
                 self.mainWindow.logmessage(u"Fetching completed, {} new node(s) created. Summary of responses: {}.".format(self.mainWindow.tree.treemodel.nodecounter,request_summary))

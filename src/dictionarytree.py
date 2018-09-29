@@ -1,5 +1,7 @@
-from PySide.QtCore import *
-from PySide.QtGui import *
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+from PySide2.QtWidgets import *
+
 import json
 import re
 import os
@@ -72,9 +74,10 @@ class DictionaryTreeModel(QAbstractItemModel):
         self.rootItem = DictionaryTreeItem(('root', {}), None,self)
         self.setdata(dic)
 
-    def reset(self):
+    def reset(self):        
+        super(DictionaryTreeModel, self).beginResetModel();
         self.rootItem.clear()
-        super(DictionaryTreeModel, self).reset()
+        super(DictionaryTreeModel, self).endResetModel();
 
     def setdata(self, data,itemtype="Generic"):
         self.reset()
@@ -153,7 +156,7 @@ class DictionaryTreeModel(QAbstractItemModel):
             return item.itemDataKey
         elif index.column() == 1:
             value = item.itemDataValue
-            if isinstance(value, basestring):
+            if isinstance(value, str):
                 value = value.replace('\n', ' ').replace('\r', '')
 
             return value
@@ -226,7 +229,7 @@ class DictionaryTreeItem(object):
             for idx, item in enumerate(value):
                 self.appendChild(DictionaryTreeItem((idx, item), self,self.model))
 
-        elif isinstance(value, (int, long)):
+        elif isinstance(value, (int)):
             self.itemDataType = 'atom'
             self.itemDataValue = str(value)
 

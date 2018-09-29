@@ -1,7 +1,7 @@
 import sys
 from cx_Freeze import setup, Executable
 
-includes = ["sqlite3","dateutil","atexit","PySide.QtNetwork"]
+includes = ["sqlite3","dateutil","atexit","PySide2.QtNetwork"]
 includefiles = ['presets/','docs/']
 
 # Dependencies are automatically detected, but it might need fine tuning.

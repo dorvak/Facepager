@@ -1,16 +1,15 @@
-from PySide.QtCore import *
-from PySide.QtWebKit import *
-from PySide.QtGui import *
-import os
-import sys
-import re
-import json
-from textviewer import *
-from urlparse import urlparse
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+import os, sys
+import re, json
+
+import urllib.parse
 import requests
 import threading
 import webbrowser
 import platform
+
+from textviewer import *
 from dictionarytree import *
 
 class PresetWindow(QDialog):

@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python
+#!/usr/bin/env python3
 """Facepager was made for fetching public available data from Facebook, Twitter and other JSON-based API. All data is stored in a SQLite database and may be exported to csv. """
 
 # MIT License
@@ -25,10 +25,10 @@
 
 
 #import yappi
-import cProfile
+#import cProfile
 import sys
-from PySide.QtCore import *
-from PySide.QtGui import *
+from PySide2.QtCore import *
+from PySide2.QtGui import *
 import icons
 from datatree import *
 from dictionarytree import *
@@ -41,6 +41,7 @@ from timer import *
 from selectnodes import *
 import logging
 import threading
+
 
 class MainWindow(QMainWindow):
 
@@ -502,7 +503,6 @@ def startMain():
 
     sys.exit(app.exec_())
 
-
 if __name__ == "__main__":
     try:
         logfolder = os.path.join(os.path.expanduser("~"),'Facepager','Logs')
@@ -510,7 +510,7 @@ if __name__ == "__main__":
             os.makedirs(logfolder)
         logging.basicConfig(filename=os.path.join(logfolder,'facepager.log'),level=logging.ERROR,format='%(asctime)s %(levelname)s:%(message)s')
     except Exception as e:
-        print u"Error intitializing log file: {}".format(e.message)
+        print (u"Error intitializing log file: {}".format(e.message))
 
 
     # Locate the SSL certificate for requests

@@ -1,13 +1,13 @@
-import Queue
+import queue
 import threading
 import time
 
 
 class ApiThreadPool():
     def __init__(self, module):
-        self.input = Queue.Queue()
-        self.output = Queue.Queue(100)
-        self.logs= Queue.Queue()
+        self.input = queue.Queue()
+        self.output = queue.Queue(100)
+        self.logs= queue.Queue()
         self.module = module
         self.threads = []
         self.pool_lock = threading.Lock()

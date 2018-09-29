@@ -8,6 +8,7 @@ src/build
 src/dist
 src/*.pyc
 src/*.pyo
+src/__pycache__
 src/credentials.py
 .project
 .pydevproject
