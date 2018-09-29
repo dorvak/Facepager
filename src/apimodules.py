@@ -8,10 +8,11 @@ import base64
 from collections import OrderedDict
 import threading
 
-from PySide2.QtWebEngineWidgets import QWebEngineView, QWebEnginePage
+# from PySide2.QtWidgets import QMessageBox, QHBoxLayout
+# from PySide2.QtWebEngineWidgets import QWebEngineView, QWebPage
 
-from PySide2.QtWidgets import QMessageBox, QHBoxLayout
-from PySide2.QtCore import QUrl
+from PySide.QtGui import QMessageBox, QHBoxLayout
+from PySide.QtWebKit import QWebView, QWebPage
 
 import requests
 from requests.exceptions import *
@@ -570,7 +571,7 @@ class ApiTab(QWidget):
         window.setWindowTitle(caption)
 
         #create WebView with Facebook log-Dialog, OpenSSL needed
-        self.login_webview = QWebEngineView(window)
+        self.login_webview = QWebView(window)
         window.setCentralWidget(self.login_webview )
 
         # Use the custom- WebPage class
@@ -1707,33 +1708,33 @@ class FilesTab(OAuth2Tab):
         callback(data, options, headers)
 
 
-class QWebPageCustom(QWebEnginePage):
+class QWebPageCustom(QWebPage):
     logmessage = Signal(str)
     urlNotFound = Signal(QUrl)
 
     def __init__(self, *args, **kwargs):
         super(QWebPageCustom, self).__init__(*args, **kwargs)
-        #self.networkAccessManager().sslErrors.connect(self.onSslErrors)
+        self.networkAccessManager().sslErrors.connect(self.onSslErrors)
 
     def supportsExtension(self, extension):
-        if extension == QWebEnginePage.ErrorPageExtension:
+        if extension == QWebPage.ErrorPageExtension:
             return True
         else:
             return False
 
     def extension(self, extension, option=0, output=0):
-        if extension != QWebEnginePage.ErrorPageExtension: return False
+        if extension != QWebPage.ErrorPageExtension: return False
 
-        if option.domain == QWebEnginePage.QtNetwork:
+        if option.domain == QWebPage.QtNetwork:
             #msg = "Network error (" + str(option.error) + "): " + option.errorString
             #self.logmessage.emit(msg)
             self.urlNotFound.emit(option.url)
 
-        elif option.domain == QWebEnginePage.Http:
+        elif option.domain == QWebPage.Http:
             msg = "HTTP error (" + str(option.error) + "): " + option.errorString
             self.logmessage.emit(msg)
 
-        elif option.domain == QWebEnginePage.WebKit:
+        elif option.domain == QWebPage.WebKit:
             msg = "WebKit error (" + str(option.error) + "): " + option.errorString
             self.logmessage.emit(msg)
         else:

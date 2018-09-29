@@ -27,8 +27,6 @@
 #import yappi
 #import cProfile
 import sys
-from PySide2.QtCore import *
-from PySide2.QtGui import *
 import icons
 from datatree import *
 from dictionarytree import *
@@ -42,6 +40,13 @@ from selectnodes import *
 import logging
 import threading
 
+
+#from PySide2.QtCore import *
+#from PySide2.QtGui import *
+
+from PySide.QtCore import *
+from PySide.QtGui import *
+    
 
 class MainWindow(QMainWindow):
 

@@ -1,9 +1,12 @@
-from PySide2.QtCore import * 
-from PySide2.QtGui import *
-from PySide2.QtWidgets import *
+# from PySide2.QtCore import * 
+# from PySide2.QtGui import *
+# from PySide2.QtWidgets import *
+#from PySide2.QtWebEngineWidgets import QWebEngineView, QWebEnginePage
 
-#from PySide2.QtWebKit import QWebView
-from PySide2.QtWebEngineWidgets import QWebEngineView, QWebEnginePage
+from PySide.QtCore import * 
+from PySide.QtGui import *
+from PySide.QtWebKit import QWebView
+
 
 
 import os
@@ -20,7 +23,7 @@ class HelpWindow(QMainWindow):
         central = QWidget()
         self.setCentralWidget(central)
         vLayout = QVBoxLayout(central)
-        self.browser = QWebEngineView(central)
+        self.browser = QWebView(central)
 
         vLayout.addWidget(self.browser)
         hLayout = QHBoxLayout()
@@ -39,8 +42,8 @@ class HelpWindow(QMainWindow):
 
     def loadPage(self):
         self.browser.load(QUrl("http://strohne.github.io/Facepager/"))
-        #self.browser.page().setLinkDelegationPolicy(QWebEnginePage.DelegateExternalLinks)
-        #self.browser.page().linkClicked.connect(self.linkClicked)
+        self.browser.page().setLinkDelegationPolicy(QWebEnginePage.DelegateExternalLinks)
+        self.browser.page().linkClicked.connect(self.linkClicked)
 
 
     def linkClicked(self,url):

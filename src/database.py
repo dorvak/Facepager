@@ -12,8 +12,12 @@ from utilities import *
 from dateutil import parser
 import datetime
 import os
-from PySide2.QtGui import *
-from PySide2.QtCore import *
+
+#from PySide2.QtGui import *
+#from PySide2.QtCore import *
+
+from PySide.QtGui import *
+from PySide.QtCore import *
 
 Base = declarative_base()
 
