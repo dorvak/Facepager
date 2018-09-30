@@ -7,8 +7,8 @@ Usage:
 within conda enviroment: use brew-installed pyside (v1.2.2), because PySide is not supported by conda anymore
 
 """
-import sys
 #import macholib_patch
+import sys
 sys.setrecursionlimit(2000)
 from setuptools import setup
 
@@ -16,7 +16,7 @@ APP = ['Facepager.py']
 DATA_FILES = [('',['docs']),('',['ssl'])]
 OPTIONS = {'argv_emulation': False,
  'iconfile':'icon.icns',
- 'includes': 'PySide2,sqlite3,atexit,PySide2.QtNetwork,PySide2.QtWebKit,credentials,requests,requests_oauthlib',
+ 'includes': 'PySide2.QtCore,sqlite3,rauth,requests_oauthlib,credentials,dynlib	',
  'packages': 'sqlalchemy,dateutil'} #pandas.timedeltas
 
 setup(

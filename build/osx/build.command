@@ -2,7 +2,7 @@
 
 cd "`dirname "$0"`"
 cd ../../src
-python setup_osx.py py2app
+python3 setup_osx.py py2app
 
 cd dist
 zip -r Facepager.app.zip Facepager.app
