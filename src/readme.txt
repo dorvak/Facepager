@@ -3,7 +3,7 @@
 #
 
 Facepager originally is developed for Python 2.7 with PySide 1
-Facepager recently migrated to Python 3.6 with PySide 2.
+Facepager recently migrated to Python 3.4 with PySide 1.
 
 Facepager depends on the following packages:
 
@@ -24,8 +24,6 @@ See credentials.py.readme for further details.
 # Steps to run under Windows with Python3
 #
 ########
-
-### NOTE: DID NOT WORK YET. I'm stuck with installing pandas, which needs Microsoft Visual C++ 10.0, of which installation fails
 
 1. Install Python3.4
 	
@@ -48,9 +46,8 @@ See credentials.py.readme for further details.
 	$ pip install rauth
 	$ pip install requests_oauthlib
 	
-	For pandas you need Microsoft Visual C++. 
-	Install latest version and then use the following trick:
-	https://www.devdungeon.com/content/fix-pip-install-unable-find-vcvarsallbat
+	For pandas you need Microsoft Visual C++ 10.0. 
+	I used the chip installer, be aware of adware!: https://www.chip.de/downloads/Visual-C-2010-Express_24081894.html 
 
 	
 	Install numpy and pandas:
@@ -65,8 +62,10 @@ Install Liclipse with PyDev, set interpreter to the just installed python.exe
 
 3. Facepager Setup
 clone Facepager
+setup credentials.py (see credentials.py.readme)
 run Facepager
-(in run and debug configuration of liclipse set interpreter to Anaconda)
+
+(in run and debug configuration of liclipse set correct interpreter)
 
 
 
@@ -259,6 +258,8 @@ Open terminal by typing "terminal" in the spotlight search (top right corner on 
 2. Install PySide, type in terminal:		
 
 	$ pip3 install PySide	
+	
+	If not possible: downgrade to Python 3.4
 
 	
 3. Install other packages, type in terminal:
@@ -277,7 +278,7 @@ Open terminal by typing "terminal" in the spotlight search (top right corner on 
 	    $ cd Documents
 	    $ git clone https://github.com/strohne/Facepager.git
 	  
-    - Create credentials.py (see above)
+    - Create credentials.py (see credentials.py.readme)
 
 	- Launch Facepager
 	
