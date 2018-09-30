@@ -236,10 +236,13 @@ If network connection is not available: Edit virtual machine, in Network Adapter
 
 To exchange files between host and guest set network connection to bridged, open macos system preferences, search sharing -> files. click options and allow sharing. Note the address of the machine and open this address with windows explorer.
 
+Set display resolution with command line in admin mode: 
+	$ VBoxManage setextradata "YOUR_MACHINE_NAME_GOES_HERE" VBoxInternal2/EfiGraphicsResolution 1280x1024
+
 Special keys in macOS
-square brackets: Alt+5 / 6.
-@ character: Alt+L
-~ character: Alt+N
+	square brackets: Alt+5 / 6.
+	@ character: Alt+L
+	~ character: Alt+N
 
 Open terminal by typing "terminal" in the spotlight search (top right corner on the screen)
 
@@ -256,17 +259,21 @@ Open terminal by typing "terminal" in the spotlight search (top right corner on 
 	Install older version with pyenv (brew install python would install the newest version)
 	
 	$ brew install pyenv
-	$ pyenv install 3.4.3
+	# $ pyenv install 3.4.3
+	$ env PYTHON_CONFIGURE_OPTS="--enable-framework" pyenv install 3.4.3
 	$ PATH="~/.pyenv/versions/3.4.3/bin:${PATH}"
 	$ pyenv global 3.4.3
 		
-	Alternatively install from package:
+	Alternatively install from package (maybe does not work):
 	$ brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/bd43f59bd50bb49242259f327cb6ac7a8dd59478/Formula/python3.rb
 
 2. Install PySide, type in terminal:		
 
 	$ pip install PySide	
 
+	Set the dynamic library path to PySide 
+	(hint: if you built Facepager, copy the content of this folder to your app package, maybe helps)
+	$ export DYLD_LIBRARY_PATH="~/.pyenv/versions/3.4.3/site-packages/PySide"
 	
 3. Install other packages, type in terminal:
 
