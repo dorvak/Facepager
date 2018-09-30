@@ -2,7 +2,8 @@
 #  General notes
 #
 
-Facepager is developed for Python 2.7
+Facepager originally is developed for Python 2.7 with PySide 1
+Facepager recently migrated to Python 3.6 with PySide 2.
 
 Facepager depends on the following packages:
 
@@ -18,6 +19,56 @@ numpy and pandas: pip install numpy pandas
 Facepager needs some secret keys to connect to Facebook and Twitter.
 See credentials.py.readme for further details.
 
+########
+#
+# Steps to run under Windows with Python3
+#
+########
+
+### NOTE: DID NOT WORK YET. I'm stuck with installing pandas, which needs Microsoft Visual C++ 10.0, of which installation fails
+
+1. Install Python3.4
+	
+		
+	Stick to Python3.4 because: 
+	- newer versions not compatible with pyside v1, 
+	- pyside2 not compatible with QtWebEngineWidgets on 32bit windows
+	
+	Download from https://www.python.org/downloads/windows/ and install
+	Open command line in installation folder. 
+	Check you use the pip from the new installation:
+	
+	$ pip -V
+	
+	Install libraries:
+	
+	$ pip install pyside
+	$ pip install sqlalchemy
+	$ pip install python-dateutil
+	$ pip install rauth
+	$ pip install requests_oauthlib
+	
+	For pandas you need Microsoft Visual C++. 
+	Install latest version and then use the following trick:
+	https://www.devdungeon.com/content/fix-pip-install-unable-find-vcvarsallbat
+
+	
+	Install numpy and pandas:
+	
+	$ pip install numpy pandas
+
+
+2. Eclipse Setup
+Install Liclipse with PyDev, set interpreter to the just installed python.exe
+( Window -> Preferences -> PyDev -> Interpreters -> Python Interpreter -> New)
+
+
+3. Facepager Setup
+clone Facepager
+run Facepager
+(in run and debug configuration of liclipse set interpreter to Anaconda)
+
+
 
 ########
 #
@@ -26,6 +77,7 @@ See credentials.py.readme for further details.
 #
 ########
 
+#### Notice: the instructions work for Python 2.7. Meanwhile Facepager migrated to Python 3.x.
 
 git clone https://github.com/strohne/Facepager
 cd Facepager
@@ -60,6 +112,8 @@ python Facepager.py
 #  Commands to run in bash are marked with $ sign 
 #
 ########
+
+#### Notice: the instructions work for Python 2.7. Meanwhile Facepager migrated to Python 3.x.
 
 #
 # 1. Prepare bash
@@ -176,14 +230,12 @@ Edit virtual machine, in Network Adapter section set network connection to "Brid
 #
 #######
 
-
-NOTE: this will not work, I am stuck with getting QtWebkit to work. I now give up and move to Python3 with PySide2 and Qt5
-
-
 0. Install maxOS in virtual machine
 Follow the steps in https://saintlad.com/install-macos-high-sierra-in-virtualbox-on-windows-10/
 
 If network connection is not available: Edit virtual machine, in Network Adapter section set network connection to "Bridged" instead of "NAT"
+
+To exchange files between host and guest set network connection to bridged, open macos system preferences, search sharing -> files. click options and allow sharing. Note the address of the machine and open this address with windows explorer.
 
 Special keys in macOS
 square brackets: Alt+5 / 6.
@@ -194,46 +246,28 @@ Open terminal by typing "terminal" in the spotlight search (top right corner on 
 
 1.Install Python
 
-	High Sierra comes with Python 2.7. However, the settings ar not configured for 
-	development. Better  install a version for development using brew.
+	High Sierra comes with Python 2.7. We need Python 3
 	
-	See https://docs.python-guide.org/starting/install/osx/
+	See https://docs.python-guide.org/starting/install3/osx/#install3-osx
 	
 	Install homebrew, type in terminal:	
 	$ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-	Install Python2:	
-	$ brew install python@2
-
-	Add new Python to Path:
-	$ export PATH="/usr/local/opt/python@2/libexec/bin:$PATH"
+	Install Python3:	
+	$ brew install python
 
 2. Install PySide, type in terminal:		
 
-	We need qt4, which is not easy to install, see https://github.com/cartr/homebrew-qt4
-
-	$ brew tap cartr/qt4
-	$ brew tap-pin cartr/qt4
-	$ brew install qt@4
-	$ brew install qt-webkit@2.3
-
-	You possibly need cmake to install PySide
-	
-	$ brew install cmake	
-	$ brew install PySide	
-	
-	$ export DYLD_LIBRARY_PATH=/usr/local/lib/python2.7/site-packages/PySide
+	$ pip3 install PySide	
 
 	
 3. Install other packages, type in terminal:
 
-	pip install SQLAlchemy
-	pip install python-dateutil
-	pip install requests
-	pip install requests_oauthlib
-	pip install -U requests[security]==2.7.0
-	pip install rauth
-	pip install pandas
+	pip3 install SQLAlchemy
+	pip3 install python-dateutil	
+	pip3 install requests_oauthlib	
+	pip3 install rauth
+	pip3 install numpy pandas
 	
 
 4. Install Facepager
@@ -245,4 +279,7 @@ Open terminal by typing "terminal" in the spotlight search (top right corner on 
 	  
     - Create credentials.py (see above)
 
-5. Launch Facepager.py (with python launcher, not in terminal)
+	- Launch Facepager
+	
+		In Facepager/src folder:		
+		$ python3 Facepager.py

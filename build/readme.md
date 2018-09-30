@@ -29,6 +29,13 @@ To show hidden files execute in terminal, then Alt+RightClick Finder and choose 
 To edit files install text editor, e.g. sublime text	
 Run build.command by double clicking in Finder or in terminal
 
+Hints for solving errors:
+https://stackoverflow.com/questions/16131500/py2app-error-in-find-needed-modules-typeerror-nonetype-object-has-no-attribu
+
+Hints for solving errors:
+After running py2app run the built from command line:
+~/Documents/GitHub/Facepager/dist/Facepager.app/Contents/MacOS/Facepager
+
 # How to deploy builds
 
 _Don't forget to adjust the tag name and message below_
