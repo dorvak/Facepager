@@ -150,7 +150,7 @@ class Node(Base):
 
         def getResponseValue(self,key,encoding=None):
             value=getDictValue(self.response,key)
-            if encoding and isinstance(value, unicode):
+            if encoding and isinstance(value, str):
                 return value.encode(encoding)
             else:
                 return value

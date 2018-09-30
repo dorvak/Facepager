@@ -74,10 +74,10 @@ class ExportFileDialog(QFileDialog):
 
             if os.path.isfile(self.selectedFiles()[0]):
                 os.remove(self.selectedFiles()[0])
-            output = open(self.selectedFiles()[0], 'wb')
+            output = open(self.selectedFiles()[0], 'w',newline="")
             try:
                 if self.optionBOM.isChecked() and not self.optionWide.isChecked():
-                    output.write(codecs.BOM_UTF8)
+                    output.write(str(codecs.BOM_UTF8))
 
                 if self.optionAll.currentIndex() == 0:
                     self.exportAllNodes(output)
@@ -135,8 +135,8 @@ class ExportFileDialog(QFileDialog):
 
 
         try:
-            delimiter = self.optionSeparator.currentText()
-            delimiter = str(delimiter.decode('string-escape'))
+            delimiter = bytes(self.optionSeparator.currentText(),'utf-8')
+            delimiter = str(delimiter.decode('unicode-escape'))
             writer = csv.writer(output, delimiter=delimiter, quotechar='"', quoting=csv.QUOTE_ALL, doublequote=True,
                                 lineterminator='\r\n')
 
@@ -164,7 +164,7 @@ class ExportFileDialog(QFileDialog):
                     row = [node.level, node.id, node.parent_id, node.objectid_encoded, node.objecttype,
                            node.querystatus, node.querytime, node.querytype]
                     for key in self.mainWindow.tree.treemodel.customcolumns:
-                        row.append(node.getResponseValue(key, "utf-8"))
+                        row.append(node.getResponseValue(key)) #, "utf-8"
 
                     if self.optionLinebreaks.isChecked():
                         row = [str(val).replace('\n', ' ').replace('\r',' ') for val in row]
