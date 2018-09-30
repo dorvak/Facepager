@@ -5,7 +5,7 @@
 
 from PySide.QtCore import * 
 from PySide.QtGui import *
-from PySide.QtWebKit import QWebView
+from PySide.QtWebKit import QWebView, QWebPage
 
 
 
@@ -42,7 +42,7 @@ class HelpWindow(QMainWindow):
 
     def loadPage(self):
         self.browser.load(QUrl("http://strohne.github.io/Facepager/"))
-        self.browser.page().setLinkDelegationPolicy(QWebEnginePage.DelegateExternalLinks)
+        self.browser.page().setLinkDelegationPolicy(QWebPage.DelegateExternalLinks)
         self.browser.page().linkClicked.connect(self.linkClicked)
 
 
