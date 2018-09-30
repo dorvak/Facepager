@@ -245,30 +245,36 @@ Open terminal by typing "terminal" in the spotlight search (top right corner on 
 
 1.Install Python
 
-	High Sierra comes with Python 2.7. We need Python 3
+	High Sierra comes with Python 2.7. We need Python 3.4. 
 	
 	See https://docs.python-guide.org/starting/install3/osx/#install3-osx
 	
 	Install homebrew, type in terminal:	
 	$ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-	Install Python3:	
-	$ brew install python
+	Install Python3.4. This is the last version supporting PySide v1.
+	Install older version with pyenv (brew install python would install the newest version)
+	
+	$ brew install pyenv
+	$ pyenv install 3.4.3
+	$ PATH="~/.pyenv/versions/3.4.3/bin:${PATH}"
+	$ pyenv global 3.4.3
+		
+	Alternatively install from package:
+	$ brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/bd43f59bd50bb49242259f327cb6ac7a8dd59478/Formula/python3.rb
 
 2. Install PySide, type in terminal:		
 
-	$ pip3 install PySide	
-	
-	If not possible: downgrade to Python 3.4
+	$ pip install PySide	
 
 	
 3. Install other packages, type in terminal:
 
-	pip3 install SQLAlchemy
-	pip3 install python-dateutil	
-	pip3 install requests_oauthlib	
-	pip3 install rauth
-	pip3 install numpy pandas
+	pip install SQLAlchemy
+	pip install python-dateutil	
+	pip install requests_oauthlib	
+	pip install rauth
+	pip install numpy pandas
 	
 
 4. Install Facepager
