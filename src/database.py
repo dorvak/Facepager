@@ -152,12 +152,14 @@ class Node(Base):
             value=getDictValue(self.response,key)
             if encoding and isinstance(value, str):
                 return value.encode(encoding)
+            elif encoding and isinstance(value, bytes):
+                return str(value,encode=encoding)
             else:
                 return value
 
         @property
         def objectid_encoded(self):
-            return self.objectid.encode('utf-8')
+            return str(self.objectid,encoding='utf-8')
 
 
 

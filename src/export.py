@@ -164,10 +164,10 @@ class ExportFileDialog(QFileDialog):
                     row = [node.level, node.id, node.parent_id, node.objectid_encoded, node.objecttype,
                            node.querystatus, node.querytime, node.querytype]
                     for key in self.mainWindow.tree.treemodel.customcolumns:
-                        row.append(node.getResponseValue(key)) #, "utf-8"
+                        row.append(node.getResponseValue(key, "utf-8"))
 
                     if self.optionLinebreaks.isChecked():
-                        row = [str(val).replace('\n', ' ').replace('\r',' ') for val in row]
+                        row = [val.replace('\n', ' ').replace('\r',' ') for val in row]
 
                     writer.writerow(row)
                     # step the Bar
