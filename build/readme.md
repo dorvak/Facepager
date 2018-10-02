@@ -30,11 +30,18 @@ To edit files install text editor, e.g. sublime text
 Run build.command by double clicking in Finder or in terminal
 
 Hints for solving errors:
-https://stackoverflow.com/questions/16131500/py2app-error-in-find-needed-modules-typeerror-nonetype-object-has-no-attribu
+- run in interactive mode and open debugger, see
+  https://stackoverflow.com/questions/16131500/py2app-error-in-find-needed-modules-typeerror-nonetype-object-has-no-attribu
 
-Hints for solving errors:
-After running py2app run the built from command line:
-~/Documents/GitHub/Facepager/dist/Facepager.app/Contents/MacOS/Facepager
+  $ python -i setup.py py2app
+  $ from pdb import pm; pm()
+"
+  "Type up and hit enter - you are now a frame higher in the stack - you can type list to see where in the source code the current frame is positioned, and args to see the arguments passed to the current frame (usually a function or method). You can also run python commands to inspect the current state, and run pp var to pretty-print that variable."
+
+
+- After running py2app run the built from command line, e.g. from
+  ~/Documents/GitHub/Facepager/dist/Facepager.app/Contents/MacOS/Facepager
+
 
 # How to deploy builds
 
