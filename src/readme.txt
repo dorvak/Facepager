@@ -273,7 +273,7 @@ Open terminal by typing "terminal" in the spotlight search (top right corner on 
 
 	Set the dynamic library path to PySide 
 	(hint: if you built Facepager, copy the content of this folder to your app package, maybe helps)
-	$ export DYLD_LIBRARY_PATH="~/.pyenv/versions/3.4.3/site-packages/PySide"
+	$ export DYLD_LIBRARY_PATH="~/.pyenv/versions/3.4.3/lib/python3.4/site-packages/PySide"
 	
 3. Install other packages, type in terminal:
 

@@ -13,10 +13,19 @@ sys.setrecursionlimit(2000)
 from setuptools import setup
 
 APP = ['Facepager.py']
+
+
 DATA_FILES = [('',['docs']),('',['ssl'])]
-OPTIONS = {'argv_emulation': False,
+OPTIONS = {
+'argv_emulation': True,
+#'plist': {
+#               'PyRuntimeLocations': [
+#                '@executable_path/../Frameworks/libpython3.4.dylib',
+#                '/Users/devel/.pyenv/versions/3.4.3/lib/libpython3.4.dylib'
+#               ]
+#           },
  'iconfile':'icon.icns',
- 'includes': 'PySide2,sqlite3,atexit,PySide2.QtNetwork,PySide2.QtWebKit,credentials,requests,requests_oauthlib',
+ 'includes': 'PySide,sqlite3,atexit,PySide.QtNetwork,PySide.QtWebKit,credentials,requests,requests_oauthlib',
  'packages': 'sqlalchemy,dateutil'} #pandas.timedeltas
 
 setup(
