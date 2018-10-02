@@ -841,7 +841,7 @@ class FacebookTab(ApiTab):
     @Slot(QUrl)
     def getToken(self,url):
         if url.toString().startswith(self.defaults['redirect_uri']):
-            url = urlparse.parse_qs(url.toString())
+            url = urllib.parse.parse_qs(url.toString())
             token = url.get(self.defaults['redirect_uri']+"#access_token",[''])
 
             self.tokenEdit.setText(token[0])
@@ -1046,7 +1046,7 @@ class TwitterTab(ApiTab):
 
     @Slot()
     def getToken(self):
-        url = urlparse.parse_qs(self.login_webview.url().toString())
+        url = urllib.parse.parse_qs(self.login_webview.url().toString())
         if "oauth_verifier" in url:
             token = url["oauth_verifier"]
             if token:
@@ -1292,7 +1292,7 @@ class TwitterStreamingTab(ApiTab):
 
     @Slot()
     def getToken(self):
-        url = urlparse.parse_qs(self.login_webview.url().toString())
+        url = urllib.parse.parse_qs(self.login_webview.url().toString())
         if 'oauth_verifier' in url:
             token = url['oauth_verifier']
             if token:
